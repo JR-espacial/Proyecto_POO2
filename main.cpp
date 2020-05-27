@@ -1,14 +1,32 @@
 #include <iostream>
-#include "package.h"
-#include "twodaypackage.h"
-#include "overnightpackage.h"
-#include <string>
+#include"pago.h"
+#include"contado.h"
+#include"credito.h"
+#include"venta.h"
+#include "motor.h"
+#include "motorGasolina.h"
+#include "motorElectrico.h"
+#include "auto.h"
+#include "autoGasolina.h"
+#include "autoElectrico.h"
+#include "cliente.h"
+#include "agencia.h"
+
+
 using namespace std;
 
 int main (){
-	Package p("sender1","recipient1",10,2.35);
-  TwoDayPackage t("sender1","recipient1",10,2.35,14.44);
-  OvernightPackage o("sender1","recipient1",10,2.35,);
-
+ Motor m;
+ cout<<m.getTorque()<<endl;
+ cout<<m.getMarca()<<endl;
+ MotorGasolina mg; 
+ cout<<mg.getTorque()<<endl;
+ cout<<mg.getMarca()<<endl;
+ AutoGasolinaRegular ag;
+ ag.imprimeAtributos();
+ AutoElectrico ae;
+ ae.imprimeAtributos();
+ Cliente cl;
+ cl.imprimeDatos();
 	return 0;
 }
