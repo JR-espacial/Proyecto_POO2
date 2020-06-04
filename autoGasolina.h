@@ -11,7 +11,7 @@ class AutoGasolinaRegular : public Auto {
 		MotorGasolina motor;
     public:
 		AutoGasolinaRegular();
-    AutoGasolinaRegular(string ,string ,int ,int , float ,  bool  ,int ,string ,string  , string ,string  , string ,	float ,string , float , float,string,int,string  );
+    AutoGasolinaRegular(string ,string ,int ,int , float ,  bool  ,int ,string ,string  , string ,string ,	float ,string , float , float,string,int,string  );
 
 		MotorGasolina getMotorGasolina();
 		void imprimeAtributos();
@@ -20,7 +20,7 @@ class AutoGasolinaRegular : public Auto {
 AutoGasolinaRegular :: AutoGasolinaRegular(): Auto(),motor(){
 
 }
-AutoGasolinaRegular :: AutoGasolinaRegular(string modm, string marm,int cDF,int tor,float ac,bool tur,int cil,string mar , string mod,string col , string tran,string est,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac ) : Auto(mod ,mar,col,tran,est,pr,tdc,ren,cap,dir,pue,trac) ,motor(modm,marm,cDF,tor,ac,tur,cil)
+AutoGasolinaRegular :: AutoGasolinaRegular(string modm, string marm,int cDF,int tor,float ac,bool tur,int cil,string mar , string mod,string col , string tran,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac ) : Auto(mod ,mar,col,tran,pr,tdc,ren,cap,dir,pue,trac) ,motor(modm,marm,cDF,tor,ac,tur,cil)
 {
 
 }

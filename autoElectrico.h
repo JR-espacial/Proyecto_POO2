@@ -1,6 +1,7 @@
 #ifndef AUTOELECTRICO_H
 #define AUTOELECTRICO_H
 #include "auto.h"
+#include "motorElectrico.h"
 #include <iostream>
 
 class AutoElectrico : public Auto {
@@ -10,7 +11,7 @@ class AutoElectrico : public Auto {
   MotorElectrico motor;
   public:
   AutoElectrico();
-  AutoElectrico(string ,string ,int ,int,float ,string ,string  , string ,string  , string ,	float ,string , float , float,string,int,string,int,float );
+  AutoElectrico(string ,string ,int ,int,float ,string ,string  , string ,string ,	float ,string , float , float,string,int,string,int,float );
 
   int getAutonomia();
   float getTiempoDeRecarga();
@@ -24,7 +25,7 @@ AutoElectrico :: AutoElectrico(): Auto (),motor(){
     tiempoDeRecarga = 0.0;
 
 }
-AutoElectrico :: AutoElectrico(string modm, string marm,int cDF,int tor,float tDA,string mar , string mod,string col , string tran,string est,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac,int aut,float tDR) : Auto( mod ,mar,col,tran,est,pr,tdc,ren,cap,dir,pue,trac), motor(modm,marm,cDF,tor,tDA)
+AutoElectrico :: AutoElectrico(string modm, string marm,int cDF,int tor,float tDA,string mar , string mod,string col , string tran,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac,int aut,float tDR) : Auto( mod ,mar,col,tran,pr,tdc,ren,cap,dir,pue,trac), motor(modm,marm,cDF,tor,tDA)
 {
     autonomia = aut;
     tiempoDeRecarga = tDR;

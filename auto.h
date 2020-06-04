@@ -15,11 +15,11 @@ class Auto{
 		float rendimiento;
 		float capacidadAl;
 		string direccion;
-        int puertas;
-        string traccion;
+    int puertas;
+    string traccion;
     public:
 		Auto ();
-		Auto(string mar , string mod,string col , string tran, string est ,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac);
+		Auto(string mar , string mod,string col , string tran,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac);
 		string getEstado();
 		string getMarca();
 		string getColor();
@@ -37,7 +37,7 @@ class Auto{
 		//virtual void imprimeAtributos() =0;
 };
 Auto :: Auto(){
-  estado = "undefined";
+  estado = "Disponible";
 	marca = "undefined";
 	modelo = "undefined";
 	color = "undefined";
@@ -50,9 +50,9 @@ Auto :: Auto(){
   rendimiento=0;
   capacidadAl=0;
 }
-Auto:: Auto( string mar , string mod,string col , string tran,string est,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac){
+Auto:: Auto( string mar , string mod,string col , string tran,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac){
 
-    estado = est;
+    estado = "Disponible";
     marca = mar;
     modelo = mod;
     color = col;
