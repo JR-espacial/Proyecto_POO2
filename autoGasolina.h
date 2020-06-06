@@ -11,16 +11,16 @@ class AutoGasolinaRegular : public Auto {
 		MotorGasolina motor;
     public:
 		AutoGasolinaRegular();
-    AutoGasolinaRegular(string ,string ,int ,int , float ,  bool  ,int ,string ,string  , string ,string ,	float ,string , float , float,string,int,string  );
+    AutoGasolinaRegular(double price,int iD, string ,string ,int ,int , float ,  bool  ,int ,string ,string  , string ,string ,string , float , float,string,int,string  );
 
 		MotorGasolina getMotorGasolina();
-		void imprimeAtributos();
+		string toString();
 
 };
 AutoGasolinaRegular :: AutoGasolinaRegular(): Auto(),motor(){
 
 }
-AutoGasolinaRegular :: AutoGasolinaRegular(string modm, string marm,int cDF,int tor,float ac,bool tur,int cil,string mar , string mod,string col , string tran,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac ) : Auto(mod ,mar,col,tran,pr,tdc,ren,cap,dir,pue,trac) ,motor(modm,marm,cDF,tor,ac,tur,cil)
+AutoGasolinaRegular :: AutoGasolinaRegular(double price,int iD, string modm, string marm,int cDF,int tor,float ac,bool tur,int cil,string mar , string mod,string col , string tran,string tdc, float ren, float cap,string dir,int pue,string trac ) : Auto(price,iD,mod ,mar,col,tran,tdc,ren,cap,dir,pue,trac) ,motor(modm,marm,cDF,tor,ac,tur,cil)
 {
 
 }
@@ -30,31 +30,36 @@ MotorGasolina AutoGasolinaRegular :: getMotorGasolina(){
 }
 
 
-void AutoGasolinaRegular :: imprimeAtributos(){
-    cout << "Atributos de el motor"<<endl;
-    cout << "-----------------------------------"<<endl;
-    cout <<"Modelo: " <<getMotorGasolina().getModelo()<<endl;
-    cout <<"Marca: " <<getMotorGasolina().getMarca()<<endl;
-    cout <<"Caballos de fuerza: " << getMotorGasolina().getCaballosDeFuerza()<<endl;
-    cout <<"Cilindros: " <<getMotorGasolina().getCilindros()<<endl;
-    cout <<"Turbo: " <<getMotorGasolina().getTurbo()<<endl;
-    cout <<"Torque: " <<getMotorGasolina().getTorque()<<endl;
-    cout <<"Acilidrada: " <<getMotorGasolina().getAcilindrada()<<endl;
-    cout << "-----------------------------------"<<endl;
-    cout << "Atributos de el auto"<<endl;
-    cout << "-----------------------------------"<<endl;
-    cout <<"Marca:" <<getMarca()<<endl;
-    cout << "Color:"<<getColor()<<endl;
-    cout << "Modelo:"<<getModelo()<<endl;
-    cout <<"Tipo de Combustible:" <<getTipoDeCombustible()<<endl;
-    cout <<"Transmision:" <<getTransmision()<<endl;
-    cout << "Precio:"<<getPrecio()<<endl;
-    cout << "Rendimeinto:"<<getRendimiento()<<"km/L"<<endl;
-    cout <<"Capacidad:" <<getCapacidadAl()<<"L"<<endl;
-    cout <<"Direccion: " <<getDireccion()<<endl;
-    cout <<"Numero de Puertas:" <<getPuertas()<<endl;
-    cout <<"Traccion:" <<getTraccion()<<endl;
-    cout << "-----------------------------------"<<endl;
+string AutoGasolinaRegular :: toString(){
+  stringstream aux;
+    aux << "-----------------------------------"<<endl;
+    aux << "Atributos de el Motor(Gasolina)"<<endl;
+    aux << "-----------------------------------"<<endl;
+    aux <<"Modelo: " <<getMotorGasolina().getModelo()<<endl;
+    aux <<"Marca: " <<getMotorGasolina().getMarca()<<endl;
+    aux <<"Caballos de fuerza: " << getMotorGasolina().getCaballosDeFuerza()<<endl;
+    aux <<"Cilindros: " <<getMotorGasolina().getCilindros()<<endl;
+    aux <<"Turbo: " <<getMotorGasolina().getTurbo()<<endl;
+    aux <<"Torque: " <<getMotorGasolina().getTorque()<<endl;
+    aux <<"Acilidrada: " <<getMotorGasolina().getAcilindrada()<<endl;
+    aux << "-----------------------------------"<<endl;
+    aux << "Atributos de el auto"<<endl;
+    aux << "-----------------------------------"<<endl;
+    aux <<"Precio:"<<getPrecio()<<endl;
+    aux <<"Id del Auto:"<<getId()<<endl;
+    aux <<"Marca:" <<getMarca()<<endl;
+    aux << "Color:"<<getColor()<<endl;
+    aux << "Modelo:"<<getModelo()<<endl;
+    aux <<"Tipo de Combustible:" <<getTipoDeCombustible()<<endl;
+    aux <<"Transmision:" <<getTransmision()<<endl;
+    aux << "Precio:"<<getPrecio()<<endl;
+    aux << "Rendimeinto:"<<getRendimiento()<<"km/L"<<endl;
+    aux <<"Capacidad:" <<getCapacidadAl()<<"L"<<endl;
+    aux <<"Direccion: " <<getDireccion()<<endl;
+    aux <<"Numero de Puertas:" <<getPuertas()<<endl;
+    aux <<"Traccion:" <<getTraccion()<<endl;
+    aux << "-----------------------------------"<<endl;
+  return aux.str();
 }
 
 #endif

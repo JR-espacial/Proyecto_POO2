@@ -11,6 +11,7 @@
 #include "autoElectrico.h"
 #include "cliente.h"
 #include "agencia.h"
+#include "seguro.h"
 
 
 using namespace std;
@@ -18,15 +19,26 @@ using namespace std;
 void registraCliente();
 void registraAutoG(Agencia& ag);
 void registraAutoE(Agencia& ag);
+void registraMetodoPCo(Agencia& ag);
+void registraMetodoPCr(Agencia& ag);
 
 int main (){
- Agencia ag;
- cout<<"hola"<<endl; 
- ag.imprimeDatos();
-	return 0;
+  Agencia ag;
+  ag.agregaMetodoP(468596, .15, .5, 12, .20, .7);
+  ag.agregaMetodoP(109009,.2);
+  AutoElectrico ae(12000, 1, "SX13", "nissan",200 , 12, .5, "nissan","sentra 2001", "blanco", "manual", "electrico", 12, 300, "hidraulica", 4, "delantera", 12, 5);
+  AutoGasolinaRegular agr;
+  Cliente jorge (1,"Jorge Alan Ramirez Elias",18,4425762074,"jorge21@hotmail.com","GEC850101415","Paseo de la Reforma # 218");
+  ag.agregaAuto(ae);
+  ag.agregaAuto(agr);
+  registraAutoE(ag);
+  cout<<ag.toString();
+  
+return 0;
 }
 void registraCliente(Agencia& ag)
 {
+  int iD;
   string nombre;
 	int edad;
 	long long int telefono;
@@ -46,7 +58,9 @@ void registraCliente(Agencia& ag)
     cin >> rfc;
     cout <<"\n Cual es tu domicilio  ";
     cin >>domicilio;
-    ag.agregaCliente(Cliente(nombre,edad,telefono,correoElectronico,rfc,domicilio));
+    Cliente *c;
+    c = new Cliente(0,nombre,edad,telefono,correoElectronico,rfc,domicilio);
+    ag.agregaCliente(*c);
 }
 
 
@@ -63,13 +77,13 @@ void registraAutoG(Agencia &ag)
     string mod;
     string col;
     string tran;
-    float pr;
     string tdc;
     float ren;
     float cap;
     string dir;
     int pue;
     string trac;
+    double price;
 
     cout << "Atributos de el motor"<<endl;
     cout << "-----------------------------------"<<endl;
@@ -90,6 +104,8 @@ void registraAutoG(Agencia &ag)
     cout << "-----------------------------------"<<endl;
     cout << "Atributos de el auto"<<endl;
     cout << "-----------------------------------"<<endl;
+    cout<<"Dame el precio de auto"<<endl;
+    cin>>price;
     cout <<"Marca:" <<endl;
     cin >> mar;
     cout << "Color:"<<endl;
@@ -100,8 +116,6 @@ void registraAutoG(Agencia &ag)
     cin >> tdc;
     cout <<"Transmision:" <<endl;
     cin >> tran;
-    cout << "Precio:"<<endl;
-    cin >> pr;
     cout << "Rendimiento:"<<"km/L"<<endl;
     cin >>ren;
     cout <<"Capacidad:" <<endl;
@@ -113,9 +127,10 @@ void registraAutoG(Agencia &ag)
     cout <<"Traccion:" <<endl;
     cin >> trac;
     cout << "-----------------------------------"<<endl;
+    AutoGasolinaRegular *a;
+    a=new AutoGasolinaRegular(price,0, modm, marm, cDF,tor,ac,tur,cil,mar,mod,col , tran,tdc,ren, cap,dir,pue,trac);
 
-
-    ag.agregaAutoG(modm, marm, cDF,tor,ac,tur,cil,mar,mod,col , tran,pr,tdc,ren, cap,dir,pue,trac);
+    ag.agregaAuto(*a);
 }
 void registraAutoE(Agencia& ag)
 {
@@ -130,7 +145,6 @@ void registraAutoE(Agencia& ag)
     string mod;
     string col;
     string tran;
-    float pr;
     string tdc;
     float ren;
     float cap;
@@ -140,6 +154,7 @@ void registraAutoE(Agencia& ag)
     float tdA;
     int aut;
     float tDR;
+    double price;
 
     cout << "Atributos de el motor"<<endl;
     cout << "-----------------------------------"<<endl;
@@ -156,6 +171,8 @@ void registraAutoE(Agencia& ag)
     cout << "-----------------------------------"<<endl;
     cout << "Atributos de el auto"<<endl;
     cout << "-----------------------------------"<<endl;
+    cout<<"Dame el precio de auto"<<endl;
+    cin>>price;
     cout <<"Marca:" <<endl;
     cin >> mar;
     cout << "Color:"<<endl;
@@ -166,8 +183,6 @@ void registraAutoE(Agencia& ag)
     cin >> tdc;
     cout <<"Transmision:" <<endl;
     cin >> tran;
-    cout << "Precio:"<<endl;
-    cin >> pr;
     cout << "Rendimiento:"<<"km/L"<<endl;
     cin >>ren;
     cout <<"Capacidad:" <<endl;
@@ -179,8 +194,32 @@ void registraAutoE(Agencia& ag)
     cout <<"Traccion:" <<endl;
     cin >> trac;
     cout << "-----------------------------------"<<endl;
-
-
-     ag.agregaAutoE(modm, marm,cDF,tor,tdA,mar , mod,col , tran,	pr,tdc, ren,  cap,dir,pue,trac,aut,tDR,1);
+     AutoElectrico *ae;
+     ae = new AutoElectrico(price,0,modm,marm,cDF,tor,tdA,mar ,mod,col ,tran,tdc,ren,cap,dir,pue,trac,aut,tDR);
+     ag.agregaAuto(*ae);
 
 }
+void registraMetodoPCo(Agencia& ag){
+  float d;
+  cout<<"Dame el procentaje de descuento en decimal"<<endl;
+  cin>>d;
+  ag.agregaMetodoP(0,d);
+}
+void registraMetodoPCr(Agencia& ag){
+  float tazaI,tazaM,enganche,multa;
+  int plazo;
+  cout<<"Dame la taza de Interes en decimal"<<endl;
+  cin>>tazaI;
+  cout<<"Dame la taza Moratoria en decimal"<<endl;
+  cin>>tazaM;
+  cout<<"Dame el porcentaje de enganche en decimal"<<endl;
+  cin>>enganche;
+  cout<<"Dame la el porcentaje de multa en decimal"<<endl;
+  cin>>multa;
+  cout<<"Dame la el plazo en meses"<<endl;
+  cin>>plazo;
+
+  ag.agregaMetodoP(0,tazaI,tazaM,enganche,multa,plazo);
+}
+
+

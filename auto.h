@@ -5,12 +5,13 @@ using namespace std;
 
 class Auto{
     private:
+    double precio;
+    int id;
     string estado;
 		string marca;
 		string modelo;
 		string color;
 		string transmision;
-		float precio;
 		string tipoDeCombustible;
 		float rendimiento;
 		float capacidadAl;
@@ -19,22 +20,23 @@ class Auto{
     string traccion;
     public:
 		Auto ();
-		Auto(string mar , string mod,string col , string tran,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac);
+		Auto(double price,int iD,string mar , string mod,string col , string tran,string tdc, float ren, float cap,string dir,int pue,string trac);
+    double getPrecio();
+    int getId();
 		string getEstado();
 		string getMarca();
 		string getColor();
 		string getModelo();
 		string getTransmision();
-		float getPrecio();
 		float getRendimiento();
 		float getCapacidadAl();
 		string getTipoDeCombustible();
 		string getDireccion();
 		int getPuertas();
 		string getTraccion();
-  	void setPrecio(float nuevoPrecio);
+  	void setPrecio(double nuevoPrecio);
 		void setEstado(string nuevoEstado);
-		//virtual void imprimeAtributos() =0;
+		virtual string toString() =0;
 };
 Auto :: Auto(){
   estado = "Disponible";
@@ -42,22 +44,22 @@ Auto :: Auto(){
 	modelo = "undefined";
 	color = "undefined";
 	transmision = "undefined";
-	precio = 0 ;
   puertas=0;
   traccion ="undefined";
   direccion = "undefined";
   tipoDeCombustible ="undefined";
   rendimiento=0;
   capacidadAl=0;
+  precio=0;
+  id=0;
 }
-Auto:: Auto( string mar , string mod,string col , string tran,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac){
+Auto:: Auto(double price,int iD, string mar , string mod,string col , string tran,string tdc, float ren, float cap,string dir,int pue,string trac){
 
     estado = "Disponible";
     marca = mar;
     modelo = mod;
     color = col;
     transmision = tran;
-    precio = pr;
     direccion = dir;
     puertas = pue;
     traccion = trac;
@@ -66,7 +68,15 @@ Auto:: Auto( string mar , string mod,string col , string tran,	float pr,string t
     capacidadAl= cap;
     direccion = dir;
     puertas = pue;
+    precio= price;
+    id=iD;
 
+}
+double Auto :: getPrecio(){
+    return precio;
+}
+int Auto :: getId(){
+  return id;
 }
 string Auto :: getEstado(){
      return estado;
@@ -94,9 +104,6 @@ string Auto :: getTipoDeCombustible(){
     return tipoDeCombustible;
  }
 
-float Auto :: getPrecio(){
-    return precio;
-}
 string Auto :: getDireccion(){
     return direccion;
 }
@@ -106,7 +113,7 @@ int Auto :: getPuertas(){
 string Auto :: getTraccion(){
     return traccion;
 }
-void Auto :: setPrecio(float nuevoPrecio){
+void Auto :: setPrecio(double nuevoPrecio){
     precio = nuevoPrecio;
 }
 void Auto :: setEstado (string nuevoEstado)

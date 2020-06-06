@@ -1,11 +1,14 @@
 #ifndef CLIENTE_H
 #define CLIENTE_H
 #include <iostream>
+#include <sstream>
+#include <string>
 
 using namespace std;
 
 class Cliente{
 	private:
+  int id;
 	string nombre;
 	int edad;
 	long long int telefono;
@@ -14,14 +17,15 @@ class Cliente{
 	string domicilio;
 	public:
 	Cliente ();
-  Cliente(string nom,int ed, long long int tel, string cE, string r, string dom);
+  Cliente(int iD ,string nom,int ed, long long int tel, string cE, string r, string dom);
 
   void setEdad(int nuevaEdad);
 	void setTelefono(long long int nuevoTelefono);
 	void setCorreoElectronico(string nuevoCorreoElectronico);
 	void setRfc(string nuevoRfc);
 	void setDomicilio(string nuevoDomicilio);
-	void imprimeDatos();
+  void setId(int nuevaId);
+	string toString();
 
 	string getNombre();
 	int  getEdad();
@@ -29,9 +33,11 @@ class Cliente{
 	string getCorreoElectronico();
 	string getRfc();
 	string getDomicilio();
+  int getId();
 
 };
 Cliente :: Cliente(){
+    id = 0;
     nombre = "undefined";
     edad = 0;
     telefono = 0;
@@ -41,13 +47,17 @@ Cliente :: Cliente(){
 
 }
 
-Cliente :: Cliente(string nom,int ed, long long int tel, string cE, string r, string dom){
+Cliente :: Cliente(int iD, string nom,int ed, long long int tel, string cE, string r, string dom){
+    id=iD;
     nombre = nom;
     edad = ed;
     telefono = tel;
     correoElectronico = cE;
     rfc = r;
     domicilio = dom;
+}
+int Cliente :: getId(){
+  return id;
 }
 string Cliente :: getNombre(){
   return nombre;
@@ -83,13 +93,18 @@ void Cliente :: setRfc(string nuevoRfc){
 void Cliente :: setDomicilio(string nuevoDomicilio){
     domicilio = nuevoDomicilio;
 }
-void  Cliente :: imprimeDatos(){
-    cout<<"Nombre: " << getNombre()<<endl;
-    cout<<"Edad: "<< getEdad()<<endl;
-    cout<<"Telefono: "<< getTelefono()<<endl;
-    cout<<"Correo elecrtonico: "<< getCorreoElectronico()<<endl;
-    cout<<"RFC: "<< getRfc()<<endl;
-    cout<<"Domicilio :"<< getDomicilio()<<endl;
+void Cliente :: setId(int nuevaId){
+    id = nuevaId;
+}
+string  Cliente :: toString(){
+  stringstream aux;
+    aux<<"Nombre: " << getNombre()<<endl;
+    aux<<"Edad: "<< getEdad()<<endl;
+    aux<<"Telefono: "<< getTelefono()<<endl;
+    aux<<"Correo elecrtonico: "<< getCorreoElectronico()<<endl;
+    aux<<"RFC: "<< getRfc()<<endl;
+    aux<<"Domicilio :"<< getDomicilio()<<endl;
+    return aux.str();
 }
 
 #endif

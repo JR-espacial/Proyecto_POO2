@@ -12,6 +12,7 @@ class Pago{
 	Pago();
 	Pago( double m , string n);
 	virtual void pagar()= 0;
+  virtual string toString()=0;
 };
 Pago :: Pago (){
 	monto = 0;

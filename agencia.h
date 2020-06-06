@@ -4,9 +4,17 @@
 #include "auto.h"
 #include "cliente.h"
 #include "pago.h"
+#include "credito.h"
+#include "contado.h"
+#include "venta.h"
+#include "seguro.h"
 #include <iostream>
+#include <sstream>
+
 
 using namespace std;
+const int TAM=100;
+const int FP = 4;
 
 class Agencia {
 	private:
@@ -18,23 +26,35 @@ class Agencia {
 	int capacidadAl;
   int clientesActuales;
   int clientesMaximos;
-  Pago *formasP[4];
-  Auto *autos[100];
-  Cliente clientes[100];
+  int formasPAct;
+  int formasPMax;
+  int ventasAct;
+  int ventasMax;
+  int segurosAct;
+  int segurosMax;
+  Pago **formasP;
+  Auto **autos;
+  Cliente *clientes;
+  Venta *ventas;
+  Seguro *seguros;
 
 	public:
 	Agencia ();
-  Agencia(string nom, long long int tel, string cE, string dom,int cap, int cM);
+  Agencia(string nom, long long int tel, string cE, string dom,int cap, int cM,int fpM,int vM,int sM);
 
   void setNombre(string nuevoNombre);
 	void setTelefono(long long int nuevoTelefono);
 	void setCorreoElectronico(string nuevoCorreoElectronico);
 	void setDomicilio(string nuevoDomicilio);
 	void setCapacidadAl(int nuevaCapacidadAl);
-	void imprimeDatos();
-	void agregaAutoG(string ,string ,int ,int , float ,  bool  ,int ,string ,string  , string ,string ,	float ,string , float , float,string,int,string);
-  void agregaAutoE(string ,string ,int ,int,float ,string ,string  , string ,string ,	float ,string , float , float,string,int,string,int,float,int );
-  void agregaCliente(Cliente c);
+	string toString();
+	void agregaAuto(double price,int iD,string ,string ,int ,int , float ,  bool  ,int ,string ,string  , string ,string ,string , float , float,string,int,string);
+  void agregaAuto(double price,int iD,string ,string ,int ,int,float ,string ,string  , string ,string ,string , float , float,string,int,string,int,float,int );
+  void agregaAuto(AutoElectrico &ae);
+  void agregaAuto(AutoGasolinaRegular &agr);
+  void agregaCliente(Cliente &c);
+  void agregaMetodoP(double m,float tI,float tM, int p,float e,float mul);
+  void agregaMetodoP(double m, float d);
 	void busca(float precioI,float precioF);
 	void busca(string marca);
 
@@ -52,20 +72,41 @@ Agencia :: Agencia (){
 	telefono = 0;
 	correoElectronico = "undefined";
 	domicilio = "undefined";
-	capacidadAl = 100 ;
+	capacidadAl = TAM ;
+  autos = new Auto*[capacidadAl];
 	autosActuales = 0;
-  clientesActuales=0;
-  clientesMaximos =100;
+  clientesActuales = 0;
+  clientesMaximos = TAM;
+  clientes = new Cliente[clientesMaximos];
+  formasPAct =0;
+  formasPMax = FP;
+  formasP = new Pago *[formasPMax];
+  ventasAct = 0;
+  ventasMax = TAM;
+  segurosAct = 0;
+  segurosMax = TAM;
+  seguros = new Seguro [segurosMax];
 }
-Agencia:: Agencia (string nom, long long int tel, string cE, string dom,int cap,int cM){
+Agencia:: Agencia (string nom, long long int tel, string cE, string dom,int cap,int cM,int fpM, int vM, int sM){
     nombre = nom;
     telefono = tel;
     correoElectronico = cE;
     domicilio = dom;
     capacidadAl = cap;
+    autos = new Auto* [capacidadAl];
     autosActuales = 0;
-    clientesActuales=0;
+    clientesActuales = 0;
     clientesMaximos = cM;
+    clientes =new Cliente[clientesMaximos];
+    formasPAct = 0;
+    formasPMax= fpM;
+    formasP = new Pago *[formasPMax];
+    ventasAct = 0;
+    ventasMax = vM;
+    ventas = new Venta [ventasMax];
+    segurosAct = 0;
+    segurosMax = sM;
+    seguros = new Seguro [segurosMax];
 }
 string Agencia :: getNombre(){
   return nombre;
@@ -109,38 +150,68 @@ void Agencia :: setDomicilio(string nuevoDomicilio){
 void Agencia :: setCapacidadAl(int nuevaCapacidadAl){
     domicilio = nuevaCapacidadAl;
 }
-void Agencia :: imprimeDatos(){
-  cout <<"Nombre de la Agencia:     "<< getNombre()<<endl;
-	cout << "Telefono:                 "<<getTelefono()<<endl;
-	cout << "Correo Electronico:       "<<getCorreoElectronico()<<endl;
-	cout << "Ubicacion de la Agencia:  "<<getDomicilio()<<endl;
-	cout <<"Capacidad maxima:         "<<getCapacidadAl()<<" autos"<<endl;
-	cout << "Autos en stock:           "<<getAutosActuales()<<endl;
-  cout << "Clientes Actuales:        "<<getClientesActuales()<<endl;
+string Agencia :: toString(){
+  stringstream aux;
+  aux <<"Nombre de la Agencia:     "<< getNombre()<<endl;
+	aux << "Telefono:                 "<<getTelefono()<<endl;
+	aux << "Correo Electronico:       "<<getCorreoElectronico()<<endl;
+	aux << "Ubicacion de la Agencia:  "<<getDomicilio()<<endl;
+	aux <<"Capacidad maxima:         "<<getCapacidadAl()<<" autos"<<endl;
+	aux << "Autos en stock:           "<<getAutosActuales()<<endl;
+  aux << "Clientes Actuales:        "<<getClientesActuales()<<endl;
+  aux <<"-------------------------------"<<endl;
+  for (int i=0; i < formasPAct; i++){
+    aux<<formasP[i]->toString()<<endl;
+  }
+  for (int i=0; i < autosActuales; i++){
+    aux<<autos[i]->toString()<<endl;
+  }
+  return aux.str();
 }
-void  Agencia :: agregaAutoG(string modm, string marm,int cDF,int tor,float ac,bool tur,int cil,string mar , string mod,string col , string tran,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac ){
+void  Agencia :: agregaAuto(double price,int iD,string modm, string marm,int cDF,int tor,float ac,bool tur,int cil,string mar , string mod,string col , string tran,string tdc, float ren, float cap,string dir,int pue,string trac ){
 
     if (capacidadAl > autosActuales){
-        autos[autosActuales] = new AutoGasolinaRegular(modm, marm,cDF,tor,ac,tur, cil,mar ,mod,col ,tran,pr,tdc,ren,cap,dir,pue,trac);
+        autos[autosActuales] = new AutoGasolinaRegular(price,iD,modm, marm,cDF,tor,ac,tur, cil,mar ,mod,col ,tran,tdc,ren,cap,dir,pue,trac);
         autosActuales++;
     }
 
 }
-void  Agencia :: agregaAutoE(string modm, string marm,int cDF,int tor,float tDA,string mar , string mod,string col , string tran,	float pr,string tdc, float ren, float cap,string dir,int pue,string trac,int aut,float tDR,int AE){
+void  Agencia :: agregaAuto(double price,int iD,string modm, string marm,int cDF,int tor,float tDA,string mar , string mod,string col , string tran,string tdc, float ren, float cap,string dir,int pue,string trac,int aut,float tDR,int AE){
 
     if (capacidadAl > autosActuales){
-        autos[autosActuales] = new AutoElectrico(modm,marm,cDF,tor,tDA,mar ,mod,col ,tran,pr,tdc,ren,cap,dir,pue,trac,aut,tDR);
+        autos[autosActuales] = new AutoElectrico(price,iD,modm,marm,cDF,tor,tDA,mar ,mod,col ,tran,tdc,ren,cap,dir,pue,trac,aut,tDR);
         autosActuales++;
     }
 
 }
-void  Agencia:: agregaCliente(Cliente c){
+void Agencia :: agregaAuto(AutoElectrico &ae){
+  if (capacidadAl > autosActuales){
+        autos[autosActuales] = &ae;
+        autosActuales++;
+    }
+}
+void Agencia :: agregaAuto(AutoGasolinaRegular &agr){
+  if (capacidadAl > autosActuales){
+        autos[autosActuales] = &agr;
+        autosActuales++;
+    }
+}
+void  Agencia:: agregaCliente(Cliente &c){
 
     if (clientesActuales < clientesMaximos){
         clientes[clientesActuales] = c;
+        clientes[clientesActuales].setId(clientesActuales);
         clientesActuales++;
     }
 
+}
+void Agencia :: agregaMetodoP(double m,float tI,float tM, int p,float e,float mul){
+   formasP[formasPAct]= new Credito(m,tI,tM,p,e,mul);
+   formasPAct++;
+}
+void Agencia :: agregaMetodoP(double m, float d){
+  formasP[formasPAct]= new Contado(m,d);
+  formasPAct++;
 }
 void Agencia :: busca(float precioI,float precioF){
    int i,c=0;
