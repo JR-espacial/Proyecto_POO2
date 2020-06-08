@@ -48,13 +48,13 @@ class Agencia {
 	void setDomicilio(string nuevoDomicilio);
 	void setCapacidadAl(int nuevaCapacidadAl);
 	string toString();
-	void agregaAuto(double price,int iD,string ,string ,int ,int , float ,  bool  ,int ,string ,string  , string ,string ,string , float , float,string,int,string);
-  void agregaAuto(double price,int iD,string ,string ,int ,int,float ,string ,string  , string ,string ,string , float , float,string,int,string,int,float,int );
   void agregaAuto(AutoElectrico &ae);
   void agregaAuto(AutoGasolinaRegular &agr);
   void agregaCliente(Cliente &c);
-  void agregaMetodoP(double m,float tI,float tM, int p,float e,float mul);
-  void agregaMetodoP(double m, float d);
+  void agregaMetodoP(Credito &cr);
+  void agregaMetodoP(Contado &co);
+  void agregaSeguro(Seguro &s);
+  void agregaVenta(Venta &v);
 	void busca(float precioI,float precioF);
 	void busca(string marca);
 
@@ -83,6 +83,7 @@ Agencia :: Agencia (){
   formasP = new Pago *[formasPMax];
   ventasAct = 0;
   ventasMax = TAM;
+  ventas = new Venta [ventasMax];
   segurosAct = 0;
   segurosMax = TAM;
   seguros = new Seguro [segurosMax];
@@ -166,23 +167,14 @@ string Agencia :: toString(){
   for (int i=0; i < autosActuales; i++){
     aux<<autos[i]->toString()<<endl;
   }
+  for (int i=0; i < segurosAct; i++){
+    aux<<seguros[i].toString()<<endl;
+  }
+  for (int i=0; i < ventasAct; i++){
+    aux<<ventas[i].toString()<<endl;
+  }
+
   return aux.str();
-}
-void  Agencia :: agregaAuto(double price,int iD,string modm, string marm,int cDF,int tor,float ac,bool tur,int cil,string mar , string mod,string col , string tran,string tdc, float ren, float cap,string dir,int pue,string trac ){
-
-    if (capacidadAl > autosActuales){
-        autos[autosActuales] = new AutoGasolinaRegular(price,iD,modm, marm,cDF,tor,ac,tur, cil,mar ,mod,col ,tran,tdc,ren,cap,dir,pue,trac);
-        autosActuales++;
-    }
-
-}
-void  Agencia :: agregaAuto(double price,int iD,string modm, string marm,int cDF,int tor,float tDA,string mar , string mod,string col , string tran,string tdc, float ren, float cap,string dir,int pue,string trac,int aut,float tDR,int AE){
-
-    if (capacidadAl > autosActuales){
-        autos[autosActuales] = new AutoElectrico(price,iD,modm,marm,cDF,tor,tDA,mar ,mod,col ,tran,tdc,ren,cap,dir,pue,trac,aut,tDR);
-        autosActuales++;
-    }
-
 }
 void Agencia :: agregaAuto(AutoElectrico &ae){
   if (capacidadAl > autosActuales){
@@ -205,13 +197,30 @@ void  Agencia:: agregaCliente(Cliente &c){
     }
 
 }
-void Agencia :: agregaMetodoP(double m,float tI,float tM, int p,float e,float mul){
-   formasP[formasPAct]= new Credito(m,tI,tM,p,e,mul);
-   formasPAct++;
+void Agencia :: agregaMetodoP(Credito &cr){
+   if (formasPAct < formasPMax ){
+     formasP[formasPAct]= &cr;
+     formasPAct++;  
+   }
+   
 }
-void Agencia :: agregaMetodoP(double m, float d){
-  formasP[formasPAct]= new Contado(m,d);
-  formasPAct++;
+void Agencia :: agregaMetodoP(Contado &co){
+  if (formasPAct < formasPMax ){
+    formasP[formasPAct] = &co;
+    formasPAct++;
+  }
+}
+void Agencia :: agregaSeguro(Seguro &s){
+  if(segurosAct < segurosMax){
+    seguros[segurosAct] = s;
+    segurosAct++;
+  }
+}
+void Agencia :: agregaVenta(Venta &v){
+  if(ventasAct < ventasMax){
+    ventas[ventasAct] = v;
+    ventasAct++;
+  }
 }
 void Agencia :: busca(float precioI,float precioF){
    int i,c=0;

@@ -21,17 +21,25 @@ void registraAutoG(Agencia& ag);
 void registraAutoE(Agencia& ag);
 void registraMetodoPCo(Agencia& ag);
 void registraMetodoPCr(Agencia& ag);
+void registraSeguro(Agencia &ag);
 
 int main (){
   Agencia ag;
-  ag.agregaMetodoP(468596, .15, .5, 12, .20, .7);
-  ag.agregaMetodoP(109009,.2);
+  Credito cr(468596, .15, .5, 12, .20, .7);
+  Contado co(109009,.2);
+  Seguro s(3,3,3,3);
+  Venta v(1, 1, "06/06/2020", 2000, 1, s);
+  ag.agregaMetodoP(cr);
+  ag.agregaMetodoP(co);
+  ag.agregaSeguro(s);
+  ag.agregaVenta(v);
   AutoElectrico ae(12000, 1, "SX13", "nissan",200 , 12, .5, "nissan","sentra 2001", "blanco", "manual", "electrico", 12, 300, "hidraulica", 4, "delantera", 12, 5);
   AutoGasolinaRegular agr;
   Cliente jorge (1,"Jorge Alan Ramirez Elias",18,4425762074,"jorge21@hotmail.com","GEC850101415","Paseo de la Reforma # 218");
   ag.agregaAuto(ae);
   ag.agregaAuto(agr);
-  registraAutoE(ag);
+  //registraAutoE(ag);
+  registraSeguro(ag);
   cout<<ag.toString();
   
 return 0;
@@ -203,7 +211,9 @@ void registraMetodoPCo(Agencia& ag){
   float d;
   cout<<"Dame el procentaje de descuento en decimal"<<endl;
   cin>>d;
-  ag.agregaMetodoP(0,d);
+  Contado *co;
+  co = new Contado(0,d);
+  ag.agregaMetodoP(*co);
 }
 void registraMetodoPCr(Agencia& ag){
   float tazaI,tazaM,enganche,multa;
@@ -218,8 +228,27 @@ void registraMetodoPCr(Agencia& ag){
   cin>>multa;
   cout<<"Dame la el plazo en meses"<<endl;
   cin>>plazo;
-
-  ag.agregaMetodoP(0,tazaI,tazaM,enganche,multa,plazo);
+  Credito *cr;
+  cr = new Credito(0,tazaI,tazaM,enganche,multa,plazo);
+  ag.agregaMetodoP(*cr);
 }
+void registraSeguro(Agencia &ag){
+  float deducible;
+  float sumaAsegurada;
+  float costo;
+  float respCiv;
+  cout << "Dame el procetaje de el deducible" << endl;
+  cin >> deducible;
+  cout << "Dame la  suma asegurada " << endl;
+  cin >> sumaAsegurada;
+  cout << "Dame el costo" << endl;
+  cin >> costo;
+  cout << "Dame las suma de cobertra de Resposabilidad Civil"<<endl;
+  cin >> respCiv;
+  Seguro *s;
+  s = new Seguro(deducible,sumaAsegurada,costo,respCiv);
+  ag.agregaSeguro(*s);
+}
+
 
 
