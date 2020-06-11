@@ -32,6 +32,7 @@ class Agencia {
   int ventasMax;
   int segurosAct;
   int segurosMax;
+  int contado;
   Pago **formasP;
   Auto **autos;
   Cliente *clientes;
@@ -55,13 +56,25 @@ class Agencia {
   void agregaMetodoP(Contado &co);
   void agregaSeguro(Seguro &s);
   void agregaVenta(Venta &v);
+  void modificaContado(float nevoDescuento);
+  void estableceMontoP(int aIndex, int pIndex);
 	void busca(float precioI,float precioF);
-	void busca(string marca);
+	void busca(string modelo);
+  void busca( int id);
+  string getNombreCliente(int i);
+  string autosToString();
+  string formasPToString();
+  string ventasToString();
+  string clientesToString();
+  string segurosToString();
+  string creditoToString();
+  string calculosContado(); 
 
 	string getNombre();
 	long long int getTelefono();
 	string getCorreoElectronico();
 	string getDomicilio();
+  int getContado();
 	int getCapacidadAl();
 	int getAutosActuales();
   int getClientesActuales();
@@ -80,6 +93,7 @@ Agencia :: Agencia (){
   clientes = new Cliente[clientesMaximos];
   formasPAct =0;
   formasPMax = FP;
+  contado = -1;
   formasP = new Pago *[formasPMax];
   ventasAct = 0;
   ventasMax = TAM;
@@ -101,6 +115,7 @@ Agencia:: Agencia (string nom, long long int tel, string cE, string dom,int cap,
     clientes =new Cliente[clientesMaximos];
     formasPAct = 0;
     formasPMax= fpM;
+    contado = -1;
     formasP = new Pago *[formasPMax];
     ventasAct = 0;
     ventasMax = vM;
@@ -122,6 +137,9 @@ string Agencia :: getCorreoElectronico(){
 string Agencia :: getDomicilio(){
 return domicilio;
 }
+int Agencia :: getContado(){
+  return contado;
+}
 int Agencia :: getAutosActuales(){
 return autosActuales;
 }
@@ -133,6 +151,9 @@ return capacidadAl;
 }
 int Agencia :: getClientesMaximos(){
 return clientesMaximos;
+}
+string Agencia :: getNombreCliente(int i){
+  return clientes[i].getNombre();
 }
 
 void Agencia :: setNombre( string nuevoNombre){
@@ -161,30 +182,70 @@ string Agencia :: toString(){
 	aux << "Autos en stock:           "<<getAutosActuales()<<endl;
   aux << "Clientes Actuales:        "<<getClientesActuales()<<endl;
   aux <<"-------------------------------"<<endl;
+  return aux.str();
+}
+string Agencia :: formasPToString(){
+  stringstream aux;
   for (int i=0; i < formasPAct; i++){
     aux<<formasP[i]->toString()<<endl;
   }
+  return aux.str();
+}
+string Agencia :: autosToString(){
+  stringstream aux;
   for (int i=0; i < autosActuales; i++){
     aux<<autos[i]->toString()<<endl;
   }
+  return aux.str();
+}
+string Agencia :: segurosToString() {
+  stringstream aux;
   for (int i=0; i < segurosAct; i++){
     aux<<seguros[i].toString()<<endl;
   }
+  return aux.str();
+}
+string Agencia :: ventasToString(){
+  stringstream aux;
   for (int i=0; i < ventasAct; i++){
     aux<<ventas[i].toString()<<endl;
   }
-
+  return aux.str();
+}
+string Agencia :: clientesToString(){
+  stringstream aux;
+  for (int i=0; i < clientesActuales; i++){
+    aux<<clientes[i].toString()<<endl;
+  }
+  return aux.str();
+}
+string Agencia :: creditoToString(){
+  stringstream aux;
+  for (int i=0; i < formasPAct && i!=contado; i++){
+    aux<<formasP[i]->toString()<<endl;
+  }
+  return aux.str();
+}
+string Agencia ::calculosContado(){
+  stringstream aux;
+  Contado *temp =  (Contado*)formasP[contado];
+  aux << "El auto que escogio tiene un precio de:"<<temp->getMonto()<<endl;
+  aux << "El descuento es de "<<temp->getDescuento()*100<<"% por pagar de contado"<<endl;
+  aux << "Por lo tanto el descuento correspondiente seria de "<<temp->cDescuento()<<endl;
+  aux << "El monto a pagar quedaria en "<<temp->montoP()<<endl;
   return aux.str();
 }
 void Agencia :: agregaAuto(AutoElectrico &ae){
   if (capacidadAl > autosActuales){
         autos[autosActuales] = &ae;
+        autos[autosActuales]->setId(autosActuales);
         autosActuales++;
     }
 }
 void Agencia :: agregaAuto(AutoGasolinaRegular &agr){
   if (capacidadAl > autosActuales){
         autos[autosActuales] = &agr;
+        autos[autosActuales]->setId(autosActuales);
         autosActuales++;
     }
 }
@@ -200,14 +261,19 @@ void  Agencia:: agregaCliente(Cliente &c){
 void Agencia :: agregaMetodoP(Credito &cr){
    if (formasPAct < formasPMax ){
      formasP[formasPAct]= &cr;
+     formasP[formasPAct]->setId(formasPAct);
      formasPAct++;  
    }
    
 }
 void Agencia :: agregaMetodoP(Contado &co){
-  if (formasPAct < formasPMax ){
-    formasP[formasPAct] = &co;
-    formasPAct++;
+  if(contado == -1){
+    if (formasPAct < formasPMax ){
+      formasP[formasPAct] = &co;
+      formasP[formasPAct]->setId(formasPAct);
+      contado = formasPAct;
+      formasPAct++;
+    }
   }
 }
 void Agencia :: agregaSeguro(Seguro &s){
@@ -222,13 +288,26 @@ void Agencia :: agregaVenta(Venta &v){
     ventasAct++;
   }
 }
+void  Agencia :: modificaContado(float nevoDescuento){
+  Contado *aux =  (Contado*)formasP[contado];
+  aux->setDescuento(nevoDescuento);
+}
+void Agencia :: estableceMontoP(int aIndex,int pIndex){
+  double nuevoMonto = autos[aIndex]->getPrecio();
+  formasP[pIndex]->setMonto(nuevoMonto);
+}
 void Agencia :: busca(float precioI,float precioF){
    int i,c=0;
    for (i=0;i<autosActuales;i++)
    {
        if (autos[i]->getPrecio()>= precioI && autos[i]->getPrecio() < precioF ) {
-           cout << "Modelo " << autos[i]->getModelo() << "Nombre: " << autos[i]->getMarca()<<endl;
            c++;
+           if (c == 1){
+             cout<<"------------------------------------------------------------------"<<endl;
+             cout<<"Los Autos que cocidieron con su presupuesto fueron los siguientes:"<<endl;
+           }
+           cout << autos[i]->toString()<<endl;
+           
        }
    }
    if (c == 0)
@@ -241,11 +320,20 @@ void Agencia :: busca(string modelo){
    for (i=0;i<autosActuales;i++)
    {
        if (autos[i]->getModelo()== modelo ) {
-           cout << "Modelo " << autos[i]->getModelo() << "Nombre: " << autos[i]->getMarca()<<endl;
+           cout << autos[i]->toString();
            c++;
        }
    }
    if (c == 0)
       cout << " No hay autos con las caracteristicas buscadas"<< endl;
+}
+void Agencia :: busca(int id){
+  if (id<autosActuales){
+    cout << autos[id]->toString();
+  }
+  else{
+    cout <<"El auto que buscas no existe porfavor verifica el numero de auto y vuelve a buscarlo"<<endl;
+  }
+
 }
 #endif

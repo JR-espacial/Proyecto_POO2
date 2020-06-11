@@ -12,26 +12,36 @@ class Contado : public Pago{
 	float descuento;
 	public:
 	Contado();
-	Contado(double m, float d);
+	Contado( float d);
 	float montoP();
 	float cDescuento();
+  float getDescuento();
   void pagar();
-  string toString();	
+  void setDescuento(float nuevoDescuento);
+  string toString();
 };
-Contado:: Contado() : Pago(0.0,"contado"),descuento(0.0){}
-Contado:: Contado (double m, float d) : Pago(m,"contado"),descuento(d){}
+Contado:: Contado() : Pago(0.0,0,"Contado"),descuento(0.0){}
+Contado:: Contado (float d) : Pago(0,0,"Contado"),descuento(d){}
 
+float  Contado :: getDescuento(){
+  return descuento;
+}
 float Contado :: montoP(){
   return(monto-(monto*descuento));
 }
 float Contado :: cDescuento(){
   return(monto*descuento);
 }
+void Contado :: setDescuento(float nuevoDescuento){
+  descuento = nuevoDescuento;
+}
 void  Contado :: pagar(){
   cout<<"contado"<<endl;
 }
 string Contado :: toString(){
   stringstream aux;
+  aux << "-----------------------------------"<<endl;
+  aux << "------------Metodo de pago#"<<id<<"-----------------------"<<endl;
   aux<<"--------------------------------------"<<endl;
   aux<<"Pago de contado"<<endl;
   aux<<"Monto: "<<monto<<endl;

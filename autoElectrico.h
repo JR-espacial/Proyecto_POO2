@@ -45,6 +45,8 @@ MotorElectrico AutoElectrico :: getMotorElectrico(){
 string AutoElectrico :: toString(){
   stringstream aux;
   aux << "-----------------------------------"<<endl;
+  aux << "------------Auto#"<<getId()<<"-----------------------"<<endl;
+  aux << "-----------------------------------"<<endl;
   aux << "Atributos de el Motor(Electrico)"<<endl;
   aux << "-----------------------------------"<<endl;
   aux <<"Modelo: " <<getMotorElectrico().getModelo()<<endl;

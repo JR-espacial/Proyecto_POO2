@@ -9,6 +9,7 @@ using namespace std;
 
 class Credito : public Pago{
   private:
+  string tipo;
   float tazaI;
   float tazaM;
   int plazo;
@@ -16,15 +17,15 @@ class Credito : public Pago{
   float multa;
   public:
   Credito();
-  Credito(double m,float tI,float tM, int p,float e,float mul);
+  Credito(float tI,float tM, int p,float e,float mul);
   float mensualidad();
   void pagar();
   string toString();
 
 };
-Credito :: Credito():Pago(0.0,"Credito"),tazaI(0),tazaM(0),plazo(0),enganche(0),multa(0){}
-Credito :: Credito(double m,float tI,float tM, int p,float e,float mul)
-: Pago(m,"Credito"),tazaI(tI),tazaM(tM),plazo(p),enganche(e),multa(mul){
+Credito :: Credito():Pago(0.0,0,"Credito"),tazaI(0),tazaM(0),plazo(0),enganche(0),multa(0){}
+Credito :: Credito(float tI,float tM, int p,float e,float mul)
+: Pago(0,0,"Credito"),tazaI(tI),tazaM(tM),plazo(p),enganche(e),multa(mul){
 
 }
 float Credito :: mensualidad(){
@@ -35,11 +36,13 @@ void  Credito :: pagar(){
 }
 string Credito :: toString(){
   stringstream aux;
+  aux << "-----------------------------------"<<endl;
+  aux << "------------Metodo de pago#"<<id<<"-----------------------"<<endl;
   aux<<"--------------------------------------"<<endl;
   aux<<"Pago con credito"<<endl;
   aux<<"Monto: "<<monto<<endl;
-  aux<<"Taza de Interes:"<<tazaI<<endl;
-  aux<<"Taza Moratoria: "<<tazaM<<endl;
+  aux<<"Taza de Interes:"<<tazaI*100<<"%"<<endl;
+  aux<<"Taza Moratoria: "<<tazaM*100<<"%"<<endl;
   aux<<"Plazo(meses):"<<plazo<<endl;
   aux<<"Enganche:"<<enganche*100<<"%"<<endl;
   aux<<"Multa:"<<multa*100<<"%"<<endl;

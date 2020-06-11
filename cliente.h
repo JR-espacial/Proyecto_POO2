@@ -17,7 +17,7 @@ class Cliente{
 	string domicilio;
 	public:
 	Cliente ();
-  Cliente(int iD ,string nom,int ed, long long int tel, string cE, string r, string dom);
+  Cliente(int iD,string nom,int ed, long long int tel, string cE, string r, string dom);
 
   void setEdad(int nuevaEdad);
 	void setTelefono(long long int nuevoTelefono);
@@ -98,6 +98,9 @@ void Cliente :: setId(int nuevaId){
 }
 string  Cliente :: toString(){
   stringstream aux;
+    aux << "-----------------------------------"<<endl;
+    aux << "------------Cliente#"<<getId()<<"-----------------------"<<endl;
+    aux << "-----------------------------------"<<endl;
     aux<<"Nombre: " << getNombre()<<endl;
     aux<<"Edad: "<< getEdad()<<endl;
     aux<<"Telefono: "<< getTelefono()<<endl;

@@ -36,6 +36,7 @@ class Auto{
 		string getTraccion();
   	void setPrecio(double nuevoPrecio);
 		void setEstado(string nuevoEstado);
+    void setId(int nuevaId);
 		virtual string toString() =0;
 };
 Auto :: Auto(){
@@ -119,5 +120,8 @@ void Auto :: setPrecio(double nuevoPrecio){
 void Auto :: setEstado (string nuevoEstado)
 {
     estado = nuevoEstado;
+}
+void  Auto :: setId(int nuevaId){
+    id = nuevaId;
 }
 #endif

@@ -33,6 +33,8 @@ MotorGasolina AutoGasolinaRegular :: getMotorGasolina(){
 string AutoGasolinaRegular :: toString(){
   stringstream aux;
     aux << "-----------------------------------"<<endl;
+    aux << "------------Auto#"<<getId()<<"-----------------------"<<endl;
+    aux << "-----------------------------------"<<endl;
     aux << "Atributos de el Motor(Gasolina)"<<endl;
     aux << "-----------------------------------"<<endl;
     aux <<"Modelo: " <<getMotorGasolina().getModelo()<<endl;
