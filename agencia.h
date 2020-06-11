@@ -61,6 +61,7 @@ class Agencia {
 	void busca(float precioI,float precioF);
 	void busca(string modelo);
   void busca( int id);
+  void venderAuto(int idAuto,int idCliente,int idSeguro, int idPago);
   string getNombreCliente(int i);
   string autosToString();
   string formasPToString();
@@ -279,6 +280,7 @@ void Agencia :: agregaMetodoP(Contado &co){
 void Agencia :: agregaSeguro(Seguro &s){
   if(segurosAct < segurosMax){
     seguros[segurosAct] = s;
+    seguros[segurosAct].setId(segurosAct);
     segurosAct++;
   }
 }
@@ -335,5 +337,25 @@ void Agencia :: busca(int id){
     cout <<"El auto que buscas no existe porfavor verifica el numero de auto y vuelve a buscarlo"<<endl;
   }
 
+}
+void Agencia :: venderAuto(int idAuto, int idCliente,int idSeguro,int idPago){
+  Venta *v;
+  double totalEntrante;
+  if(idPago == contado){
+     Contado *aux = (Contado*)formasP[contado];
+    totalEntrante = aux->montoP();
+  }
+  else{
+    Credito *aux =(Credito*)formasP[idPago];
+    totalEntrante = aux->mensualidad();
+  }
+  if (idSeguro == -9){
+    v = new Venta(idAuto, idCliente,"Hoy", totalEntrante);
+  }
+  else{
+    totalEntrante += seguros[idSeguro].getCosto();
+    v = new Venta(idAuto,idCliente,"Hoy",totalEntrante,seguros[idSeguro]);
+  }
+  agregaVenta(*v);
 }
 #endif

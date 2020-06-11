@@ -16,27 +16,28 @@
 
 using namespace std;
 
-void registraCliente();
+int registraCliente();
 void registraAutoG(Agencia& ag);
 void registraAutoE(Agencia& ag);
 void registraMetodoPCo(Agencia& ag);
 void registraMetodoPCr(Agencia& ag);
 void registraSeguro(Agencia &ag);
 void sistema(Agencia &ag);
-int validaUsuario(string u, Agencia &ag);
-bool sistemaCliente(Agencia &ag);
-bool sistemaAdmin( Agencia &ag);
-void comprarAuto(Agencia &ag);
-int venta (Agencia &ag,int idAuto);
-int pagoContado(Agencia &ag,int idAuto);
-int pagoCredito(Agencia &ag,int idAuto);
+int validaUsuario(string u, Agencia &ag,int &id);
+bool sistemaCliente(Agencia &ag,int &idCliente);
+bool sistemaAdmin( Agencia &ag,int &idCliente);
+void comprarAuto(Agencia &ag,int &idCliente);
+int venta (Agencia &ag,int idAuto,int &idCliente);
+int pagoContado(Agencia &ag,int idAuto,int &mPindex);
+int pagoCredito(Agencia &ag,int idAuto,int &mPindex);
+int adquirirSeguro(Agencia &ag,int idAuto, int &sIndex);
 
 int main (){
   Agencia ag;
   Credito cr(.15, .5, 12, .20, .7);
   Contado co(.2);
-  Seguro s(3,3,3,3);
-  Venta v(1, 1, "06/06/2020", 2000, 1, s);
+  Seguro s(3,3,600,3);
+  Venta v(1,1,"06/06/2020", 2000, s);
   Cliente feli(1,"Felipe",19,68969696,"felipe@gmail.com","FE700","Ecuador");
   ag.agregaMetodoP(cr);
   ag.agregaMetodoP(co);
@@ -61,9 +62,8 @@ int main (){
   
 return 0;
 }
-void registraCliente(Agencia& ag)
+int registraCliente(Agencia& ag)
 {
-  int iD;
   string nombre;
 	int edad;
 	long long int telefono;
@@ -86,6 +86,11 @@ void registraCliente(Agencia& ag)
     Cliente *c;
     c = new Cliente(0,nombre,edad,telefono,correoElectronico,rfc,domicilio);
     ag.agregaCliente(*c);
+    for (int i =0;i<ag.getClientesActuales();i++){
+      if (nombre == ag.getNombreCliente(i) ){
+        return i;
+      }
+    }
 }
 
 
@@ -280,7 +285,7 @@ void registraSeguro(Agencia &ag){
   ag.agregaSeguro(*s);
 }
 void sistema(Agencia &ag){
-int first,second;
+int first,second,idCliente;
 bool loop =1;
 while(loop == 1){
  cout<<"--------Menu Principal------"<<endl;
@@ -290,21 +295,21 @@ while(loop == 1){
   string nombre;
   cout<<"Dame tu nombre"<<endl;
   getline(cin>>ws,nombre);
-  second =validaUsuario(nombre, ag);
+  second =validaUsuario(nombre, ag,idCliente);
   switch (second){
     case 1:
-    loop=sistemaAdmin(ag);
+    loop=sistemaAdmin(ag,idCliente);
     if(loop == 0){
       cout<<"END"<<endl;
     }
     break;
     case 2:
-    loop = sistemaCliente(ag);
+    loop = sistemaCliente(ag,idCliente);
     cout<<"END"<<endl;
     break;
     case 3:
-    registraCliente(ag);
-    loop = sistemaCliente(ag);
+    idCliente = registraCliente(ag);
+    loop = sistemaCliente(ag,idCliente);
     cout<<"END"<<endl;
     break;
     case 4:
@@ -312,8 +317,8 @@ while(loop == 1){
   }
  }
  else if(first == 2){
-   registraCliente(ag);
-   loop = sistemaCliente(ag);
+  idCliente = registraCliente(ag);
+   loop = sistemaCliente(ag,idCliente);
  }
  else if(first == 3){
    loop = 0;
@@ -323,7 +328,7 @@ while(loop == 1){
 }
 
 
-int validaUsuario(string u, Agencia &ag){
+int validaUsuario(string u, Agencia &ag,int &idCliente){
   bool coincidencia =0;
   string newName;
   int op;
@@ -333,6 +338,7 @@ int validaUsuario(string u, Agencia &ag){
   }
     for (int i =0;i<ag.getClientesActuales();i++){
       if (u == ag.getNombreCliente(i) ){
+        idCliente=i;
         return 2;
       }
     }
@@ -356,8 +362,8 @@ int validaUsuario(string u, Agencia &ag){
 }
 
 
-bool sistemaAdmin(Agencia &ag){
-  int op,op2,op3,enter;
+bool sistemaAdmin(Agencia &ag,int &idCliente){
+  int op,op2,op3,enter,temp;
   bool salir = 0;
   cout<<"Sistema admin"<<endl;
   while (salir == 0){
@@ -365,7 +371,7 @@ bool sistemaAdmin(Agencia &ag){
   cin>>op;
   switch (op){
     case 1:
-    registraCliente(ag);
+    temp = registraCliente(ag);
     cout<<"--------Cliente Registrado Exitosamete-------\n<Escriba 1  para continuar>"<<endl;
     cin>>enter;
     break;
@@ -421,7 +427,7 @@ bool sistemaAdmin(Agencia &ag){
   }
 }
 
-bool sistemaCliente(Agencia &ag){
+bool sistemaCliente(Agencia &ag, int &idCliente){
 int op;
 bool salir = 0;
 string modelo;
@@ -447,7 +453,7 @@ switch (op){
   ag.busca(precioI, precioF);
   break;
   case 4:
-  comprarAuto(ag);
+  comprarAuto(ag,idCliente);
   break;
   case 5:
   salir=1;
@@ -462,7 +468,7 @@ switch (op){
 }
 }
 
-void comprarAuto(Agencia &ag){
+void comprarAuto(Agencia &ag,int &idCliente){
   int op,idAuto;
   bool salir = 0;
   while (salir == 0){
@@ -473,11 +479,10 @@ void comprarAuto(Agencia &ag){
   cin>>op;
   switch (op){
     case 1:
-     salir = venta(ag,idAuto);
+     salir = venta(ag,idAuto,idCliente);
     break;
 
     case 2:
-    cout <<"caso2";
     break;
     case 3:
     salir = 1;
@@ -486,38 +491,100 @@ void comprarAuto(Agencia &ag){
   }
 
 }
-int venta (Agencia &ag,int idAuto){
+int venta (Agencia &ag,int idAuto,int &idCliente){
   int salir=0; 
-  int op;
-  while (salir ==0){
+  int op,mPindex,sIndex,op2;
+  sIndex=-1;
+  while (salir <=0){
     cout <<"Que tipo de pago quieres hacer\n[1] Contado\n[2] Credito"<<endl;
     cin>> op;
     switch (op){
       case 1:
-      salir = pagoContado(ag,idAuto);
+      salir = pagoContado(ag,idAuto,mPindex);
+      if (salir == -1){
+        cout<< "Dease comprar un seguro para tu auto\n[1] Si\n[2] No"<<endl;
+        cin>>op2;
+        if (op2 == 1){
+          salir = adquirirSeguro(ag,idAuto,sIndex);
+        }
+        ag.venderAuto(idAuto, idCliente, sIndex,mPindex);
+      }
       break;
       case 2:
-      salir = pagoCredito(ag,idAuto);
+      salir = pagoCredito(ag,idAuto,mPindex);
+      if (salir == -1){
+        cout<< "Dease comprar un seguro para tu auto\n[1] Si\n[2] No"<<endl;
+        cin>>op2;
+        if (op2 == 1){
+          salir = adquirirSeguro(ag,idAuto,sIndex);
+        }
+        ag.venderAuto(idAuto, idCliente, sIndex,mPindex);
+        
+      }
       break;
     }
   }
+  if (salir ==2){
+    return 1;
+  }
+  else{
+    return 0;
+  }
 
 }
-int  pagoContado(Agencia &ag,int idAuto){
+int  pagoContado(Agencia &ag,int idAuto,int &mPindex){
   int op;
   float descuento;
+  mPindex= ag.getContado();
   ag.estableceMontoP(idAuto,ag.getContado());
   cout<<ag.calculosContado();
-  cout<< "Deseas proceder con el pago\n[1] Si \n[2] No cambiar forma de pago"<<endl;
+  cout<< "Deseas proceder con el pago\n[1] Si \n[2] No cambiar forma de pago\n[3] No volver a escribir el numero de auto\n[4] No volver al menu anterior"<<endl;
   cin >> op;
+  switch(op){
+    case 1:
+    return -1;
+    break;
+    case 2:
+    return 0;
+    break;
+    case 3:
+    return 1;
+    break;
+    case 4:
+    return 2;
+    break; 
+  }
  
 }
-int pagoCredito(Agencia &ag,int idAuto){
+int pagoCredito(Agencia &ag,int idAuto,int &mPindex){
   int op,pIndex;
-  cout <<ag.creditoToString();
-  cout<<"Estas son las opciones de credito\n cuando hayas escogido una escribe  el numero del Metodo de pago escogido"<<endl;
+  cout << ag.creditoToString();
+  cout<<"Estas son las opciones de credito\nCuando hayas escogido una escribe  el numero del Metodo de pago escogido"<<endl;
   cin >> pIndex;
+  mPindex=pIndex;
   ag.estableceMontoP(idAuto, pIndex);
+   cout<< "Deseas proceder con el pago\n[1] Si \n[2] No cambiar forma de pago\n[3] No volver a escribir el numero de auto\n[4] No volver al menu anterior"<<endl;
+  cin >> op;
+  switch(op){
+    case 1:
+    return -1;
+    break;
+    case 2:
+    return 0;
+    break;
+    case 3:
+    return 1;
+    break;
+    case 4:
+    return 2;
+    break; 
+  }
+
+}
+int adquirirSeguro(Agencia &ag, int idAuto,int &sIndex){
+  cout<<ag.segurosToString();
+  cout<<"Estas son las opciones de Seguros\n cuando hayas escogido una escribe  el numero del Seguro  escogido"<<endl;
+  cin >> sIndex;
 
 }
 

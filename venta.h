@@ -13,14 +13,16 @@ class Venta{
   bool seguroFlag;
   Seguro seguro;
   string fechaVenta;
-  float totalEntrante;
+  double totalEntrante;
   public:
   Venta();
-  Venta(int au, int cl,string fV, float tE,bool sF,Seguro &s);
+  Venta(int au, int cl,string fV, double tE);
+  Venta(int au, int cl,string fV, double tE,Seguro &s);
   string toString();
 };
 Venta :: Venta():idAuto(0),idCliente(0),fechaVenta("undefined"),totalEntrante(0.0),seguroFlag(0),seguro(){}
-Venta :: Venta(int au, int cl,string fV, float tE,bool sF,Seguro &s):idAuto(au),idCliente(cl),fechaVenta(fV),totalEntrante(tE),seguroFlag(sF),seguro(s){}
+Venta :: Venta(int au, int cl,string fV, double tE):idAuto(au),idCliente(cl),fechaVenta(fV),totalEntrante(tE),seguroFlag(0),seguro(){}
+Venta :: Venta(int au, int cl,string fV, double tE,Seguro &s):idAuto(au),idCliente(cl),fechaVenta(fV),totalEntrante(tE),seguroFlag(1),seguro(s){}
 
 string Venta :: toString(){
   stringstream aux;
