@@ -5,15 +5,15 @@
 
 class MotorGasolina: public Motor{
     private:
-        float acilidradrada;
-        bool turbo;
-        int cilindros;
+      float acilidradrada;
+      bool turbo;
+      int cilindros;
     public:
-        MotorGasolina ();
-        MotorGasolina (string,string,int,int,float,bool,int);
-        int getCilindros();
-        bool getTurbo();
-        float getAcilindrada();
+      MotorGasolina ();
+      MotorGasolina (string,string,int,int,float,bool,int);
+      int getCilindros();
+      bool getTurbo();
+      float getAcilindrada();
 
 };
 MotorGasolina :: MotorGasolina ():Motor(){

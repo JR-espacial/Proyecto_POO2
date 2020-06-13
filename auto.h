@@ -1,3 +1,11 @@
+/*----------------------------------
+ *
+ * Proyecto POO 2
+ * Fecha: 13 Junio 2020
+ * Autor: A001701350 Jorge Alan Ramirez Elias
+ *
+ -----------------------------------
+ Descripcion de la fucionalidad de  la clase*/
 #ifndef AUTO_H
 #define AUTO_H
 #include <string>
@@ -25,15 +33,16 @@ class Auto{
     int getId();
 		string getEstado();
 		string getMarca();
+    string getModelo();
 		string getColor();
-		string getModelo();
 		string getTransmision();
+    string getTipoDeCombustible();
 		float getRendimiento();
 		float getCapacidadAl();
-		string getTipoDeCombustible();
 		string getDireccion();
 		int getPuertas();
 		string getTraccion();
+
   	void setPrecio(double nuevoPrecio);
 		void setEstado(string nuevoEstado);
     void setId(int nuevaId);
@@ -91,9 +100,11 @@ string Auto :: getModelo(){
 string Auto :: getColor(){
     return color;
 }
-
 string Auto :: getTransmision(){
     return transmision;
+}
+string Auto :: getTipoDeCombustible(){
+    return tipoDeCombustible;
 }
 float Auto :: getRendimiento(){
     return rendimiento;
@@ -101,10 +112,6 @@ float Auto :: getRendimiento(){
 float Auto :: getCapacidadAl(){
     return capacidadAl;
 }
-string Auto :: getTipoDeCombustible(){
-    return tipoDeCombustible;
- }
-
 string Auto :: getDireccion(){
     return direccion;
 }
@@ -114,11 +121,12 @@ int Auto :: getPuertas(){
 string Auto :: getTraccion(){
     return traccion;
 }
+
+
 void Auto :: setPrecio(double nuevoPrecio){
     precio = nuevoPrecio;
 }
-void Auto :: setEstado (string nuevoEstado)
-{
+void Auto :: setEstado (string nuevoEstado){
     estado = nuevoEstado;
 }
 void  Auto :: setId(int nuevaId){

@@ -55,7 +55,7 @@ string AutoGasolinaRegular :: toString(){
     aux <<"Tipo de Combustible:" <<getTipoDeCombustible()<<endl;
     aux <<"Transmision:" <<getTransmision()<<endl;
     aux << "Precio:"<<getPrecio()<<endl;
-    aux << "Rendimeinto:"<<getRendimiento()<<"km/L"<<endl;
+    aux << "Rendimiento:"<<getRendimiento()<<"km/L"<<endl;
     aux <<"Capacidad:" <<getCapacidadAl()<<"L"<<endl;
     aux <<"Direccion: " <<getDireccion()<<endl;
     aux <<"Numero de Puertas:" <<getPuertas()<<endl;

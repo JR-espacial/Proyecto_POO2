@@ -19,6 +19,14 @@ class Cliente{
 	Cliente ();
   Cliente(int iD,string nom,int ed, long long int tel, string cE, string r, string dom);
 
+	int getId();
+  string getNombre();
+	int  getEdad();
+	long long int getTelefono();
+	string getCorreoElectronico();
+	string getRfc();
+	string getDomicilio();
+
   void setEdad(int nuevaEdad);
 	void setTelefono(long long int nuevoTelefono);
 	void setCorreoElectronico(string nuevoCorreoElectronico);
@@ -27,13 +35,7 @@ class Cliente{
   void setId(int nuevaId);
 	string toString();
 
-	string getNombre();
-	int  getEdad();
-	long long int getTelefono();
-	string getCorreoElectronico();
-	string getRfc();
-	string getDomicilio();
-  int getId();
+
 
 };
 Cliente :: Cliente(){

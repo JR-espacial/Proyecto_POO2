@@ -8,21 +8,45 @@ using namespace std;
 
 class Venta{
   private:
-  int idAuto;
-  int idCliente;
-  bool seguroFlag;
-  Seguro seguro;
-  string fechaVenta;
-  double totalEntrante;
+    int idAuto;
+    int idCliente;
+    bool seguroFlag;
+    string fechaVenta;
+    double totalEntrante;
+    Seguro seguro;
+
   public:
-  Venta();
-  Venta(int au, int cl,string fV, double tE);
-  Venta(int au, int cl,string fV, double tE,Seguro &s);
-  string toString();
+    Venta();
+    Venta(int au, int cl,string fV, double tE);
+    Venta(int au, int cl,string fV, double tE,Seguro &s);
+
+    int getIdAuto();
+    int getIdCliente();
+    bool getSeguroFlag();
+    string  getFechaVenta();
+    double  getTotalEntrante();
+
+    string toString();
 };
 Venta :: Venta():idAuto(0),idCliente(0),fechaVenta("undefined"),totalEntrante(0.0),seguroFlag(0),seguro(){}
 Venta :: Venta(int au, int cl,string fV, double tE):idAuto(au),idCliente(cl),fechaVenta(fV),totalEntrante(tE),seguroFlag(0),seguro(){}
 Venta :: Venta(int au, int cl,string fV, double tE,Seguro &s):idAuto(au),idCliente(cl),fechaVenta(fV),totalEntrante(tE),seguroFlag(1),seguro(s){}
+
+int Venta :: getIdAuto(){
+  return idAuto;
+}
+int Venta :: getIdCliente(){
+  return idCliente;
+}
+bool Venta :: getSeguroFlag(){
+  return seguroFlag;
+}
+string Venta :: getFechaVenta(){
+  return fechaVenta;
+}
+double Venta :: getTotalEntrante(){
+  return totalEntrante;
+}
 
 string Venta :: toString(){
   stringstream aux;

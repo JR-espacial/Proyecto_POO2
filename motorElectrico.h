@@ -6,13 +6,13 @@
 using namespace std;
 
 class MotorElectrico: public Motor{
-    private:
-         float tiempoDeAceleracion;
+  private:
+    float tiempoDeAceleracion;
 
-    public:
-        MotorElectrico ();
-        MotorElectrico(string,string,int,int,float);
-        float getTiempoDeAceleracion();
+  public:
+    MotorElectrico ();
+    MotorElectrico(string,string,int,int,float);
+    float getTiempoDeAceleracion();
 
 };
 MotorElectrico :: MotorElectrico ():Motor(){

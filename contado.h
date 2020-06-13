@@ -9,16 +9,18 @@ using namespace std;
 
 class Contado : public Pago{
 	private:
-	float descuento;
-	public:
-	Contado();
-	Contado( float d);
-	float montoP();
-	float cDescuento();
-  float getDescuento();
-  void pagar();
-  void setDescuento(float nuevoDescuento);
-  string toString();
+    float descuento;
+  public:
+    Contado();
+    Contado( float d);
+
+    float getDescuento();
+
+    float montoP();
+    float cDescuento();
+    void pagar();
+    void setDescuento(float nuevoDescuento);
+    string toString();
 };
 Contado:: Contado() : Pago(0.0,0,"Contado"),descuento(0.0){}
 Contado:: Contado (float d) : Pago(0,0,"Contado"),descuento(d){}
@@ -26,6 +28,7 @@ Contado:: Contado (float d) : Pago(0,0,"Contado"),descuento(d){}
 float  Contado :: getDescuento(){
   return descuento;
 }
+
 float Contado :: montoP(){
   return(monto-(monto*descuento));
 }
@@ -44,7 +47,6 @@ string Contado :: toString(){
   aux << "------------Metodo de pago#"<<id<<"-----------------------"<<endl;
   aux<<"--------------------------------------"<<endl;
   aux<<"Pago de contado"<<endl;
-  aux<<"Monto: "<<monto<<endl;
   aux<<"Descuento: "<<descuento*100<<"%"<<endl;
   return aux.str();
 }

@@ -4,13 +4,13 @@
 using namespace std;
 
 class  Motor{
-    private:
+  private:
     string modelo;
     string marca;
     int caballosDeFuerza;
-	int torque;	
-    public:
-	Motor();
+    int torque;	
+  public:
+    Motor();
     Motor(string,string,int,int);
 
     string getModelo();

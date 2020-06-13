@@ -65,7 +65,7 @@ string AutoElectrico :: toString(){
   aux <<"Tipo de Combustible:" <<getTipoDeCombustible()<<endl;
   aux <<"Transmision:" <<getTransmision()<<endl;
   aux << "Precio:"<<getPrecio()<<endl;
-  aux << "Rendimeinto:"<<getRendimiento()<<"km/L"<<endl;
+  aux << "Rendimiento:"<<getRendimiento()<<"Wh/100lm"<<endl;
   aux <<"Capacidad:" <<getCapacidadAl()<<"kWh"<<endl;
   aux <<"Direccion: " <<getDireccion()<<endl;
   aux <<"Numero de Puertas:" <<getPuertas()<<endl;
